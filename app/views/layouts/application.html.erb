@@ -8,6 +8,10 @@
 
     <%= stylesheet_link_tag 'application', media: 'all' %>
     <%= javascript_pack_tag 'application' %>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@900&display=swap" rel="stylesheet">
   </head>
 
   <body>
@@ -17,13 +21,14 @@
     <% if alert %>
       <p class="alert alert-danger"><%= alert %></p>
     <% end %>
-
-    <p class="navbar-container">
-      <% if user_signed_in? %>
+    <% if user_signed_in? %>
+      <p class="navbar-container">
         <%= link_to "Logout", destroy_user_session_path, method: :delete, :class => 'navbar-link'  %>
-      <% end %>
-    </p>
-
+      </p>
+    <% end %>
+    <% unless user_signed_in? %>
+      <h1 class="zhaul">ZHAUL</h1>
+    <% end %>
     <%= yield %>
   </body>
 </html>
