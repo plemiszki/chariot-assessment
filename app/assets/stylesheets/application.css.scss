@@ -13,3 +13,11 @@
  *= require_tree .
  *= require_self
  */
+
+@import 'reset';
+@import 'fonts';
+@import 'auth';
+
+body {
+  background-color: #F5F6F7;
+}
