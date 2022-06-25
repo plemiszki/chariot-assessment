@@ -1,3 +1,8 @@
+:root {
+  --button-color: #01647c;
+  --highlight-color: #0385a4;
+}
+
 .alert {
   padding: 15px;
   margin-bottom: 20px;
@@ -15,4 +20,118 @@
   color: #3c763d;
   background-color: #dff0d8;
   border-color: #d6e9c6;
+}
+
+h2 {
+  text-align: center;
+  font-family: 'TeachableSans-Bold';
+  padding: 20px 0;
+  font-size: 30px;
+}
+
+button-styles {
+  border-radius: 5px;
+  font-size: 12px;
+  text-align: center;
+  font-family: 'TeachableSans-Regular';
+  padding: 10px;
+  line-height: 10px;
+  background-color: var(--button-color);
+  color: white;
+
+  &:hover {
+    background-color: var(--highlight-color);
+  }
+}
+
+form.new_user, form.edit_user {
+  margin: auto;
+  width: 500px;
+  text-align: center;
+  background-color: white;
+  padding: 30px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+
+  #error_explanation {
+    color: black;
+    background-color: pink;
+    padding: 15px;
+    border-radius: 10px;
+    font-family: 'TeachableSans-Bold';
+    font-size: 14px;
+    margin-bottom: 20px;
+
+    h2 {
+      display: none;
+    }
+
+    li:not(:last-of-type) {
+      line-height: 20px;
+      margin-bottom: 5px;
+    }
+  }
+
+  div.field {
+    text-align: left;
+    margin-bottom: 15px;
+
+    label {
+      display: inline-block;
+      font-family: 'TeachableSans-Bold';
+      margin-bottom: 5px;
+    }
+
+    input[type="email"], input[type="password"] {
+      width: 100%;
+      box-sizing: border-box;
+      border: 1px solid #E4E9ED;
+      border-radius: 3px;
+      color: #5F5F5F;
+      letter-spacing: inherit;
+      line-height: 17px;
+      padding: 13px;
+    }
+
+    input[type="checkbox"] {
+      margin-top: 0;
+      margin-right: 10px;
+      vertical-align: middle;
+    }
+
+    input[type="checkbox"] + label {
+      margin-bottom: 0;
+      line-height: 13px;
+      vertical-align: middle;
+      user-select: none;
+    }
+
+    em {
+      display: block;
+      margin-top: 5px;
+    }
+
+    i {
+      display: none;
+    }
+  }
+
+  input[type="submit"] {
+    @extend button-styles;
+    font-family: 'TeachableSans-Bold';
+    padding: 15px;
+    cursor: pointer;
+  }
+}
+
+form + a {
+  display: block;
+  margin: auto;
+  width: 100px;
+  text-align: center;
+  text-decoration: underline;
+
+  &:hover {
+    text-decoration: underline;
+  }
 }
