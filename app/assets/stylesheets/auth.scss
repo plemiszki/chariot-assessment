@@ -44,6 +44,19 @@ button-styles {
   }
 }
 
+p.navbar-container {
+  position: absolute;
+  right: 0;
+}
+
+a.navbar-link {
+  @extend button-styles;
+  float: right;
+  display: inline-block;
+  margin-right: 15px;
+  margin-top: 15px;
+}
+
 form.new_user, form.edit_user {
   margin: auto;
   width: 500px;
