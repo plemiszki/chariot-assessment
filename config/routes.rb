@@ -2,7 +2,9 @@ Rails.application.routes.draw do
 
   devise_for :users
 
-  root "public#home"
+  devise_scope :user do
+    root to: "devise/sessions#new"
+  end
 
   resources :reservations, only: [:index, :show, :new]
 
