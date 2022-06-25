@@ -1,4 +1,4 @@
-class Api::ReservationsController < ApplicationController
+class Api::ReservationsController < AdminController
 
   def index
   end
