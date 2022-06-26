@@ -1,5 +1,7 @@
 class ReservationsController < AdminController
 
+  layout 'signed_in'
+
   def index
   end
 

@@ -19,7 +19,12 @@
     <% if alert %>
       <p class="alert alert-danger"><%= alert %></p>
     <% end %>
-    <h1 class="zhaul">ZHAUL</h1>
-    <%= yield %>
+    <p class="navbar-container">
+      <%= button_to "Logout", destroy_user_session_path, method: :delete, :class => 'navbar-link'  %>
+    </p>
+    <h1 class="zhaul-left">ZHAUL</h1>
+    <div class="component-container">
+      <%= yield %>
+    </div>
   </body>
 </html>

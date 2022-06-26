@@ -1,7 +1,7 @@
 class Api::ReservationsController < AdminController
 
   def index
-    @reservations = Reservation.where(user: current_user).order(:start_date)
+    @reservations = Reservation.where(user: current_user).includes(:truck).order(:start_date)
     render "index", formats: [:json], handlers: [:jbuilder]
   end
 
