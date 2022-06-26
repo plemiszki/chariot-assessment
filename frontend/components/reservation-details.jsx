@@ -6,10 +6,13 @@ export default function ReservationDetails() {
 
   const [spinner, setSpinner] = useState(true)
   const [reservation, setReservation] = useState([])
-  const [modalOpen, setModalOpen] = useState(false)
+  const [cancelModalOpen, setCancelModalOpen] = useState(false)
+
+  const reservationId = window.location.pathname.split('/')[2]
+  const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content')
 
   useEffect(() => {
-    fetch(`/api/reservations/${window.location.pathname.split('/')[2]}`)
+    fetch(`/api/reservations/${reservationId}`)
       .then(data => data.json())
       .then((response) => {
         setReservation(response.reservation)
@@ -17,16 +20,33 @@ export default function ReservationDetails() {
       })
   }, [])
 
-  const modalStyles = {
+  const cancelReservation = () => {
+    setSpinner(true)
+    setCancelModalOpen(false)
+    fetch(`/api/reservations/${reservationId}`, {
+      method: 'DELETE',
+      headers: {
+        'x-csrf-token': csrfToken,
+        'Content-Type': 'application/json',
+      },
+    })
+      .then(window.location.pathname = '/reservations')
+  }
+
+  const cancelModalStyles = {
     overlay: {
       background: 'rgba(0, 0, 0, 0.50)'
     },
     content: {
-      background: '#F5F6F7',
-      padding: 0,
+      background: '#FFFFFF',
       margin: 'auto',
-      maxWidth: 1000,
-      height: 420
+      maxWidth: 540,
+      height: 125,
+      border: 'solid 1px red',
+      borderRadius: '6px',
+      textAlign: 'center',
+      color: '#5F5F5F',
+      paddingTop: '36px'
     }
   }
 
@@ -99,6 +119,58 @@ export default function ReservationDetails() {
     )
   }
 
+  const renderCancelModal = () => {
+    return(
+      <>
+        <div className="confirm-delete">
+          <h1>Are you sure you want to cancel this reservation&#63;</h1>
+          <a onClick={ () => { cancelReservation() } }>
+            Yes
+          </a>
+          <a onClick={ () => { setCancelModalOpen(false) } }>
+            No
+          </a>
+        </div>
+        <style jsx>{`
+          h1 {
+            color: #2C2F33;
+            font-family: 'TeachableSans-SemiBold';
+            font-size: 20px;
+            line-height: 27px;
+            margin: auto;
+            margin-bottom: 30px;
+          }
+
+          a {
+            display: inline-block;
+            font-family: 'TeachableSans-Medium';
+            padding: 15px 40px;
+            text-align: center;
+            font-size: 12px;
+            border-radius: 100px;
+            background-color: var(--button-color);
+            color: white;
+            letter-spacing: inherit;
+            cursor: pointer;
+          }
+
+          a:hover {
+            background-color: var(--highlight-color);
+          }
+
+          a:first-of-type {
+            margin-right: 40px;
+            background-color: darkred;
+          }
+
+          a:first-of-type:hover {
+            background-color: red;
+          }
+        `}</style>
+      </>
+    )
+  }
+
   return(
     <>
       <div>
@@ -106,9 +178,9 @@ export default function ReservationDetails() {
         <div className="white-box">
           { spinner ? renderSpinner() : renderDetails() }
         </div>
-        <button className="cancel" onClick={ () => { setModalOpen(true) } }>Cancel Reservation</button>
-        <Modal isOpen={ modalOpen } onRequestClose={ () => { setModalOpen(false) } } contentLabel="Modal" style={ modalStyles }>
-          hello
+        { spinner || (<button className="cancel" onClick={ () => { setCancelModalOpen(true) } }>Cancel Reservation</button>) }
+        <Modal isOpen={ cancelModalOpen } onRequestClose={ () => { setCancelModalOpen(false) } } contentLabel="Modal" style={ cancelModalStyles } ariaHideApp={ false }>
+          { renderCancelModal() }
         </Modal>
       </div>
       <style jsx>{`
@@ -127,14 +199,14 @@ export default function ReservationDetails() {
           padding: 10px;
           text-align: center;
           font-size: 12px;
-          background-color: var(--button-color);
+          background-color: darkred;
           border-radius: 5px;
           color: white;
           letter-spacing: inherit;
           cursor: pointer;
         }
         button:hover {
-          background-color: var(--highlight-color);
+          background-color: red;
         }
       `}</style>
     </>

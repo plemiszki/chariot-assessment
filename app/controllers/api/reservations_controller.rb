@@ -17,6 +17,9 @@ class Api::ReservationsController < AdminController
   end
 
   def destroy
+    reservation = Reservation.find(params[:id])
+    reservation.update(is_cancelled: true)
+    head :ok
   end
 
 end

@@ -1,4 +1,5 @@
 import React from 'react'
+import ReactModal from 'react-modal'
 import { createRoot } from 'react-dom/client'
 
 import ReservationsIndex from './components/reservations-index.jsx'
