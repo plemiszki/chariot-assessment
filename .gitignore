@@ -34,3 +34,7 @@
 /yarn-error.log
 yarn-debug.log*
 .yarn-integrity
+
+* Ignore bundle.js and bundle.js.map
+/app/assets/javascripts/bundle.js
+/app/assets/javascripts/bundle.js.map
