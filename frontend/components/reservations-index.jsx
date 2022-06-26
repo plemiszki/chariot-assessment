@@ -1,9 +1,24 @@
 import React, { useState, useEffect } from 'react'
+import Modal from 'react-modal'
 
 export default function ReservationsIndex() {
 
-  const [reservations, setReservations] = useState([])
   const [spinner, setSpinner] = useState(true)
+  const [reservations, setReservations] = useState([])
+  const [modalOpen, setModalOpen] = useState(false)
+
+  const modalStyles = {
+    overlay: {
+      background: 'rgba(0, 0, 0, 0.50)'
+    },
+    content: {
+      background: '#F5F6F7',
+      padding: 0,
+      margin: 'auto',
+      maxWidth: 1000,
+      height: 420
+    }
+  }
 
   useEffect(() => {
     fetch('/api/reservations')
@@ -103,7 +118,10 @@ export default function ReservationsIndex() {
         <div className="white-box">
           { spinner ? renderSpinner() : renderTable() }
         </div>
-        <button onClick={ () => { console.log('add reservation') } }>Add Reservation</button>
+        <button onClick={ () => { setModalOpen(true) } }>Add Reservation</button>
+        <Modal isOpen={ modalOpen } onRequestClose={ () => { setModalOpen(false) } } contentLabel="Modal" style={ modalStyles }>
+          hello
+        </Modal>
       </div>
       <style jsx>{`
         .white-box {
