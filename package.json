@@ -1,16 +1,22 @@
 {
   "name": "chariot-assessment",
-  "private": true,
+  "scripts": {
+    "heroku-postbuild": "webpack --mode production",
+    "dev": "webpack --watch"
+  },
   "dependencies": {
-    "@rails/actioncable": "^6.0.0",
-    "@rails/activestorage": "^6.0.0",
-    "@rails/ujs": "^6.0.0",
-    "@rails/webpacker": "5.4.3",
-    "webpack": "^4.46.0",
+    "@babel/core": "7.4.0",
+    "@babel/preset-react": "7.0.0",
+    "babel-loader": "8.0.5",
+    "change-case": "3.1.0",
+    "react": "16.8.4",
+    "react-dom": "16.8.4",
+    "react-modal": "3.8.1",
+    "styled-jsx": "^3.4.4",
+    "webpack": "4.29.6",
     "webpack-cli": "^3.3.12"
   },
-  "version": "0.1.0",
-  "devDependencies": {
-    "webpack-dev-server": "^3"
+  "engines": {
+    "node": "16.14.2"
   }
 }
