@@ -10,6 +10,7 @@ Rails.application.routes.draw do
 
   namespace :api do
     resources :reservations, only: [:index, :show, :create, :update, :destroy]
+    resources :trucks, only: [:index]
   end
 
 end
