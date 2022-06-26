@@ -1,6 +1,7 @@
 class Reservation < ApplicationRecord
 
-  validates :user_id, :truck_id, :start_date, :end_date, presence: true
+  validates :user_id, :truck_id, presence: true
+  validates_date :start_date, :end_date
 
   validate :valid_date_range?
 
