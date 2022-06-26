@@ -6,6 +6,8 @@ class Api::ReservationsController < AdminController
   end
 
   def show
+    @reservation = Reservation.find(params[:id])
+    render 'show', formats: [:json], handlers: [:jbuilder]
   end
 
   def create
