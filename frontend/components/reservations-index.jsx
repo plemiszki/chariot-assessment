@@ -48,6 +48,12 @@ export default function ReservationsIndex() {
     )
   }
 
+  const renderNoReservations = () => {
+    return(
+      <p>You currently have no reservations.</p>
+    )
+  }
+
   const renderTable = () => {
     return(
       <>
@@ -56,7 +62,7 @@ export default function ReservationsIndex() {
             <tr>
               <th>Start Date</th>
               <th>End Date</th>
-              <th>Truck Type</th>
+              <th>Vehicle Type</th>
             </tr>
           </thead>
           <tbody>
@@ -116,7 +122,7 @@ export default function ReservationsIndex() {
       <div>
         <h1 className="component-header">Your Reservations</h1>
         <div className="white-box">
-          { spinner ? renderSpinner() : renderTable() }
+          { spinner ? renderSpinner() : (reservations.length === 0 ? renderNoReservations() : renderTable()) }
         </div>
         <button onClick={ () => { setModalOpen(true) } }>Add Reservation</button>
         <Modal isOpen={ modalOpen } onRequestClose={ () => { setModalOpen(false) } } contentLabel="Modal" style={ modalStyles }>
