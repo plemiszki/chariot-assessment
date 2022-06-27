@@ -173,7 +173,12 @@ export default function ReservationDetails() {
         <div className="white-box">
           { spinner ? renderSpinner() : renderDetails() }
         </div>
-        { spinner || (<button className="cancel" onClick={ () => { setCancelModalOpen(true) } }>Cancel Reservation</button>) }
+        { spinner || (
+          <>
+            <a href="/reservations">View All Reservations</a>
+            <button className="cancel" onClick={ () => { setCancelModalOpen(true) } }>Cancel Reservation</button>
+          </>
+        ) }
         <Modal isOpen={ editModalOpen } onRequestClose={ () => { setEditModalOpen(false) } } contentLabel="Modal" style={ newModalStyles } ariaHideApp={ false }>
           <ReservationNew
             edit={ true }
@@ -198,18 +203,27 @@ export default function ReservationDetails() {
           box-sizing: border-box;
           margin-bottom: 28px;
         }
-        button {
+        a, button {
           display: inline-block;
           border: none;
           font-family: 'TeachableSans-Medium';
           padding: 10px;
           text-align: center;
           font-size: 12px;
-          background-color: darkred;
           border-radius: 5px;
           color: white;
           letter-spacing: inherit;
           cursor: pointer;
+        }
+        a {
+          background-color: var(--button-color);
+          margin-right: 20px;
+        }
+        a:hover {
+          background-color: var(--highlight-color);
+        }
+        button {
+          background-color: darkred;
         }
         button:hover {
           background-color: red;
