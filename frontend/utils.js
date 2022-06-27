@@ -32,27 +32,27 @@ export const renderSpinner = () => {
   )
 }
 
-export const renderMessage = () => {
+export const renderMessage = (tag) => {
   let text
   let className
-  switch(window.location.search) {
-    case "?message=success_new":
+  switch(tag) {
+    case "success_new":
       text = "Thank you! Your reservation has been completed."
       className = "success"
       break
-    case "?message=success_update":
+    case "success_update":
       text = "Thank you! Your reservation has been updated."
       className = "success"
       break
-    case "?message=failure_truck":
+    case "failure_truck":
       text = "We're sorry, but a truck of that type is not available within your reservation period."
       className = "failure"
       break
-    case "?message=failure_dates":
+    case "failure_dates":
       text = "We're sorry, but a truck of your type is not available within that date range."
       className = "failure"
       break
-    case "?message=failure":
+    case "failure":
       text = "We're sorry, but a truck of that type is not available for your requested reservation period."
       className = "failure"
       break

@@ -1,13 +1,18 @@
 import React, { useState, useEffect } from 'react'
 import ChangeCase from 'change-case'
 import Modal from 'react-modal'
+import ReservationNew from './reservation-new.jsx'
 import { newModalStyles, renderMessage, renderSpinner } from '../utils.js'
 
 export default function ReservationDetails() {
 
+  const urlParams = new URLSearchParams(window.location.search)
+
   const [spinner, setSpinner] = useState(true)
   const [reservation, setReservation] = useState([])
   const [cancelModalOpen, setCancelModalOpen] = useState(false)
+  const [editModalOpen, setEditModalOpen] = useState(false)
+  const [messageTag, setMessageTag] = useState(urlParams.get('message'))
 
   const reservationId = window.location.pathname.split('/')[2]
   const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content')
@@ -38,6 +43,12 @@ export default function ReservationDetails() {
       })
   }, [])
 
+  const updateReservationDetails = (reservation) => {
+    setEditModalOpen(false)
+    setReservation(reservation)
+    setMessageTag('success_update')
+  }
+
   const cancelReservation = () => {
     setSpinner(true)
     setCancelModalOpen(false)
@@ -59,14 +70,14 @@ export default function ReservationDetails() {
             <h2>Truck Type</h2>
             <img src={ `/truck-${ChangeCase.paramCase(reservation.truckType)}.png` } />
             <p>{ reservation.truckTypeEnglish }</p>
-            <a>Change</a>
+            <a onClick={ () => { setEditModalOpen(true) } }>Change</a>
           </li>
           <li>
             <h2>Start Date</h2>
             <p>{ reservation.startDate }</p>
             <h2>End Date</h2>
             <p>{ reservation.endDate }</p>
-            <a>Change</a>
+            <a onClick={ () => { setEditModalOpen(true) } }>Change</a>
           </li>
         </ul>
         <style jsx>{`
@@ -156,12 +167,22 @@ export default function ReservationDetails() {
   return(
     <>
       <div>
-        { renderMessage() }
+        { renderMessage(messageTag) }
         <h1 className="component-header">Your Reservation Details</h1>
         <div className="white-box">
           { spinner ? renderSpinner() : renderDetails() }
         </div>
         { spinner || (<button className="cancel" onClick={ () => { setCancelModalOpen(true) } }>Cancel Reservation</button>) }
+        <Modal isOpen={ editModalOpen } onRequestClose={ () => { setEditModalOpen(false) } } contentLabel="Modal" style={ newModalStyles } ariaHideApp={ false }>
+          <ReservationNew
+            edit={ true }
+            reservationId={ reservation.id }
+            currentTruckType={ reservation.truckType }
+            currentStartDate={ new Date(reservation.startDate) }
+            currentEndDate={ new Date(reservation.endDate) }
+            updateReservationDetails={ updateReservationDetails }
+          />
+        </Modal>
         <Modal isOpen={ cancelModalOpen } onRequestClose={ () => { setCancelModalOpen(false) } } contentLabel="Modal" style={ cancelModalStyles } ariaHideApp={ false }>
           { renderCancelModal() }
         </Modal>

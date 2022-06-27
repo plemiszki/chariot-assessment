@@ -2,12 +2,19 @@ import React, { useState, useEffect } from 'react'
 import DatePicker from 'react-date-picker'
 import ChangeCase from 'change-case'
 
-export default function ReservationNew() {
+export default function ReservationNew({
+  edit,
+  reservationId,
+  currentTruckType,
+  currentStartDate,
+  currentEndDate,
+  updateReservationDetails,
+}) {
 
   const [spinner, setSpinner] = useState(true)
-  const [startDate, setStartDate] = useState(new Date)
-  const [endDate, setEndDate] = useState(new Date)
-  const [selectedTruckType, setTruckType] = useState()
+  const [startDate, setStartDate] = useState(currentStartDate || new Date)
+  const [endDate, setEndDate] = useState(currentEndDate || new Date)
+  const [selectedTruckType, setTruckType] = useState(currentTruckType || null)
   const [truckTypes, setTruckTypes] = useState([])
   const [page, setPage] = useState(1)
 
@@ -18,7 +25,7 @@ export default function ReservationNew() {
       .then(data => data.json())
       .then((response) => {
         setTruckTypes(response.truckTypes)
-        setTruckType(response.truckTypes[0].truckType)
+        setTruckType(selectedTruckType || response.truckTypes[0].truckType)
         setSpinner(false)
       })
   }, [])
@@ -28,6 +35,28 @@ export default function ReservationNew() {
       setEndDate(startDate)
     }
   }, [startDate])
+
+  const clickUpdateButton = () => {
+    setSpinner(true)
+    fetch(`/api/reservations/${reservationId}`, {
+      method: 'PUT',
+      headers: {
+        'x-csrf-token': csrfToken,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        reservation: {
+          start_date: startDate,
+          end_date: endDate,
+          truck_type: selectedTruckType,
+        }
+      })
+    })
+      .then(data => data.json())
+      .then((response) => {
+        updateReservationDetails(response.reservation)
+      })
+  }
 
   const clickNextButton = () => {
     switch (page) {
@@ -198,7 +227,7 @@ export default function ReservationNew() {
     <>
       <div className="container">
         { spinner ? renderSpinner() : renderForm() }
-        { spinner || <button onClick={ () => { clickNextButton() } }>Next</button> }
+        { spinner || <button onClick={ () => { edit ? clickUpdateButton() : clickNextButton() } }>{ edit ? 'Update' : 'Next' }</button> }
       </div>
       <style jsx>{`
         .container {

@@ -5,9 +5,12 @@ import { newModalStyles, renderMessage, renderSpinner } from '../utils.js'
 
 export default function ReservationsIndex() {
 
+  const urlParams = new URLSearchParams(window.location.search)
+
   const [spinner, setSpinner] = useState(true)
   const [reservations, setReservations] = useState([])
   const [modalOpen, setModalOpen] = useState(false)
+  const [messageTag, setMessageTag] = useState(urlParams.get('message'))
 
   useEffect(() => {
     fetch('/api/reservations')
@@ -90,7 +93,7 @@ export default function ReservationsIndex() {
   return(
     <>
       <div>
-        { renderMessage() }
+        { renderMessage(messageTag) }
         <h1 className="component-header">Your Reservations</h1>
         <div className="white-box">
           { spinner ? renderSpinner() : (reservations.length === 0 ? renderNoReservations() : renderTable()) }
