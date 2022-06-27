@@ -12,6 +12,7 @@ export default function ReservationDetails() {
   const [reservation, setReservation] = useState([])
   const [cancelModalOpen, setCancelModalOpen] = useState(false)
   const [editModalOpen, setEditModalOpen] = useState(false)
+  const [editModalPage, setEditModalPage] = useState(1)
   const [messageTag, setMessageTag] = useState(urlParams.get('message'))
 
   const reservationId = window.location.pathname.split('/')[2]
@@ -70,14 +71,14 @@ export default function ReservationDetails() {
             <h2>Truck Type</h2>
             <img src={ `/truck-${ChangeCase.paramCase(reservation.truckType)}.png` } />
             <p>{ reservation.truckTypeEnglish }</p>
-            <a onClick={ () => { setEditModalOpen(true) } }>Change</a>
+            <a onClick={ () => { setEditModalOpen(true); setEditModalPage(1) } }>Change</a>
           </li>
           <li>
             <h2>Start Date</h2>
             <p>{ reservation.startDate }</p>
             <h2>End Date</h2>
             <p>{ reservation.endDate }</p>
-            <a onClick={ () => { setEditModalOpen(true) } }>Change</a>
+            <a onClick={ () => { setEditModalOpen(true); setEditModalPage(2) } }>Change</a>
           </li>
         </ul>
         <style jsx>{`
@@ -181,6 +182,7 @@ export default function ReservationDetails() {
             currentStartDate={ new Date(reservation.startDate) }
             currentEndDate={ new Date(reservation.endDate) }
             updateReservationDetails={ updateReservationDetails }
+            startPage={ editModalPage }
           />
         </Modal>
         <Modal isOpen={ cancelModalOpen } onRequestClose={ () => { setCancelModalOpen(false) } } contentLabel="Modal" style={ cancelModalStyles } ariaHideApp={ false }>

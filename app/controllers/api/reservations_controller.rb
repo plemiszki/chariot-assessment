@@ -30,6 +30,7 @@ class Api::ReservationsController < AdminController
 
   def update
     @reservation = Reservation.find(params[:id])
+    @reservation.assign_attributes(reservation_params.except("truck_type"))
 
     if @reservation.valid?(:dates_only)
       available_truck = Truck.find_by_truck_type(reservation_params["truck_type"])

@@ -9,6 +9,7 @@ export default function ReservationNew({
   currentStartDate,
   currentEndDate,
   updateReservationDetails,
+  startPage,
 }) {
 
   const [spinner, setSpinner] = useState(true)
@@ -16,7 +17,7 @@ export default function ReservationNew({
   const [endDate, setEndDate] = useState(currentEndDate || new Date)
   const [selectedTruckType, setTruckType] = useState(currentTruckType || null)
   const [truckTypes, setTruckTypes] = useState([])
-  const [page, setPage] = useState(1)
+  const [page, setPage] = useState(startPage || 1)
 
   const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content')
 
