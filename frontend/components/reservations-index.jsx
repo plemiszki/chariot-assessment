@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Modal from 'react-modal'
+import ReservationNew from './reservation-new.jsx'
 
 export default function ReservationsIndex() {
 
@@ -16,7 +17,7 @@ export default function ReservationsIndex() {
       padding: 0,
       margin: 'auto',
       maxWidth: 1000,
-      height: 420
+      height: 525,
     }
   }
 
@@ -125,8 +126,8 @@ export default function ReservationsIndex() {
           { spinner ? renderSpinner() : (reservations.length === 0 ? renderNoReservations() : renderTable()) }
         </div>
         <button onClick={ () => { setModalOpen(true) } }>Add Reservation</button>
-        <Modal isOpen={ modalOpen } onRequestClose={ () => { setModalOpen(false) } } contentLabel="Modal" style={ modalStyles }>
-          hello
+        <Modal isOpen={ modalOpen } onRequestClose={ () => { setModalOpen(false) } } contentLabel="Modal" style={ modalStyles } ariaHideApp={ false }>
+          <ReservationNew />
         </Modal>
       </div>
       <style jsx>{`
