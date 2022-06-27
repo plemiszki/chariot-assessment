@@ -50,7 +50,10 @@ export default function ReservationNew() {
             }
           })
         })
-          // .then(window.location.pathname = '/reservations')
+          .then(data => data.json())
+          .then((response) => {
+            window.location.pathname = `/reservations/${response.reservation.id}`
+          })
     }
   }
 
