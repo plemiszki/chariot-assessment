@@ -1,25 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import Modal from 'react-modal'
 import ReservationNew from './reservation-new.jsx'
+import { newModalStyles, renderMessage, renderSpinner } from '../utils.js'
 
 export default function ReservationsIndex() {
 
   const [spinner, setSpinner] = useState(true)
   const [reservations, setReservations] = useState([])
   const [modalOpen, setModalOpen] = useState(false)
-
-  const modalStyles = {
-    overlay: {
-      background: 'rgba(0, 0, 0, 0.50)'
-    },
-    content: {
-      background: '#F5F6F7',
-      padding: 0,
-      margin: 'auto',
-      maxWidth: 1000,
-      height: 525,
-    }
-  }
 
   useEffect(() => {
     fetch('/api/reservations')
@@ -29,45 +17,6 @@ export default function ReservationsIndex() {
         setSpinner(false)
       })
   }, [])
-
-  const renderMessage = () => {
-    if (window.location.search === '?message=failure') {
-      return(
-        <>
-          <p>We're sorry, but a truck of that type is not available for your requested reservation period.</p>
-          <style jsx>{`
-            p {
-              padding: 20px;
-              background: pink;
-              border-radius: 5px;
-              font-family: 'TeachableSans-SemiBold';
-              margin-bottom: 30px;
-              box-shadow: 1px 2px 3px 0px #e6e9ec;
-            }
-          `}</style>
-        </>
-      )
-    }
-  }
-
-  const renderSpinner = () => {
-    return(
-      <>
-        <div className="spinner"></div>
-        <style jsx>{`
-          width: 90px;
-          height: 90px;
-          background: url(/ajax-loader.svg);
-          left: calc(50% - 45px);
-          top: cacl(50% - 45px);
-          margin: auto;
-          background-position: center;
-          background-repeat: no-repeat;
-          opacity: 0.75;
-        `}</style>
-      </>
-    )
-  }
 
   const renderNoReservations = () => {
     return(
@@ -147,7 +96,7 @@ export default function ReservationsIndex() {
           { spinner ? renderSpinner() : (reservations.length === 0 ? renderNoReservations() : renderTable()) }
         </div>
         <button onClick={ () => { setModalOpen(true) } }>Add Reservation</button>
-        <Modal isOpen={ modalOpen } onRequestClose={ () => { setModalOpen(false) } } contentLabel="Modal" style={ modalStyles } ariaHideApp={ false }>
+        <Modal isOpen={ modalOpen } onRequestClose={ () => { setModalOpen(false) } } contentLabel="Modal" style={ newModalStyles } ariaHideApp={ false }>
           <ReservationNew />
         </Modal>
       </div>

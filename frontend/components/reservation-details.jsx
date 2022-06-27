@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import ChangeCase from 'change-case'
 import Modal from 'react-modal'
+import { newModalStyles, renderMessage, renderSpinner } from '../utils.js'
 
 export default function ReservationDetails() {
 
@@ -48,70 +49,6 @@ export default function ReservationDetails() {
       },
     })
       .then(window.location.pathname = '/reservations')
-  }
-
-  const renderMessage = () => {
-    let text
-    let className
-    switch(window.location.search) {
-      case "?message=success_new":
-        text = "Thank you! Your reservation has been completed."
-        className = "success"
-        break
-      case "?message=success_update":
-        text = "Thank you! Your reservation has been updated."
-        className = "success"
-        break
-      case "?message=failure_truck":
-        text = "We're sorry, but a truck of that type is not available within your reservation period."
-        className = "failure"
-        break
-      case "?message=failure_dates":
-        text = "We're sorry, but a truck of your type is not available within that date range."
-        className = "failure"
-        break
-      default:
-        return
-    }
-    return(
-      <>
-        <p className={ className }>{ text }</p>
-        <style jsx>{`
-          p {
-            padding: 20px;
-            border-radius: 5px;
-            font-family: 'TeachableSans-SemiBold';
-            margin-bottom: 30px;
-            box-shadow: 1px 2px 3px 0px #e6e9ec;
-          }
-          p.success {
-            background: lightgreen;
-          }
-          p.failure {
-            background: pink;
-          }
-        `}</style>
-      </>
-    )
-  }
-
-  const renderSpinner = () => {
-    return(
-      <>
-        <div className="spinner"></div>
-        <style jsx>{`
-          width: 90px;
-          height: 90px;
-          background: url(/ajax-loader.svg);
-          left: calc(50% - 45px);
-          top: cacl(50% - 45px);
-          margin: auto;
-          background-position: center;
-          background-repeat: no-repeat;
-          opacity: 0.75;
-        `}</style>
-      </>
-    )
   }
 
   const renderDetails = () => {
