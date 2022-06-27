@@ -10,6 +10,8 @@ export default function ReservationNew() {
   const [truckTypes, setTruckTypes] = useState([])
   const [page, setPage] = useState(1)
 
+  const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+
   useEffect(() => {
     fetch('/api/trucks')
       .then(data => data.json())
@@ -22,13 +24,27 @@ export default function ReservationNew() {
   }, [])
 
   const clickNextButton = () => {
-    console.log('click next button')
     switch (page) {
       case 1:
         setPage(2)
         break
       case 2:
         setSpinner(true)
+        fetch('/api/reservations', {
+          method: 'POST',
+          headers: {
+            'x-csrf-token': csrfToken,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            reservation: {
+              start_date: startDate,
+              end_date: endDate,
+              truck_type: selectedTruckType,
+            }
+          })
+        })
+          // .then(window.location.pathname = '/reservations')
     }
   }
 
