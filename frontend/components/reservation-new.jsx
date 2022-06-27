@@ -52,7 +52,7 @@ export default function ReservationNew() {
         })
           .then(data => data.json())
           .then((response) => {
-            window.location.pathname = `/reservations/${response.reservation.id}`
+            window.location.href = `/reservations/${response.reservation.id}?message=success_new`
           })
     }
   }

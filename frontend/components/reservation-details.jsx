@@ -11,6 +11,23 @@ export default function ReservationDetails() {
   const reservationId = window.location.pathname.split('/')[2]
   const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content')
 
+  const cancelModalStyles = {
+    overlay: {
+      background: 'rgba(0, 0, 0, 0.50)'
+    },
+    content: {
+      background: '#FFFFFF',
+      margin: 'auto',
+      maxWidth: 540,
+      height: 125,
+      border: 'solid 1px red',
+      borderRadius: '6px',
+      textAlign: 'center',
+      color: '#5F5F5F',
+      paddingTop: '36px'
+    }
+  }
+
   useEffect(() => {
     fetch(`/api/reservations/${reservationId}`)
       .then(data => data.json())
@@ -33,21 +50,49 @@ export default function ReservationDetails() {
       .then(window.location.pathname = '/reservations')
   }
 
-  const cancelModalStyles = {
-    overlay: {
-      background: 'rgba(0, 0, 0, 0.50)'
-    },
-    content: {
-      background: '#FFFFFF',
-      margin: 'auto',
-      maxWidth: 540,
-      height: 125,
-      border: 'solid 1px red',
-      borderRadius: '6px',
-      textAlign: 'center',
-      color: '#5F5F5F',
-      paddingTop: '36px'
+  const renderMessage = () => {
+    let text
+    let className
+    switch(window.location.search) {
+      case "?message=success_new":
+        text = "Thank you! Your reservation has been completed."
+        className = "success"
+        break
+      case "?message=success_update":
+        text = "Thank you! Your reservation has been updated."
+        className = "success"
+        break
+      case "?message=failure_truck":
+        text = "We're sorry, but a truck of that type is not available within your reservation period."
+        className = "failure"
+        break
+      case "?message=failure_dates":
+        text = "We're sorry, but a truck of your type is not available within that date range."
+        className = "failure"
+        break
+      default:
+        return
     }
+    return(
+      <>
+        <p className={ `message ${className}` }>{ text }</p>
+        <style jsx>{`
+          p {
+            padding: 20px;
+            border-radius: 5px;
+            font-family: 'TeachableSans-SemiBold';
+            margin-bottom: 30px;
+            box-shadow: 1px 2px 3px 0px #e6e9ec;
+          }
+          p.success {
+            background: lightgreen;
+          }
+          p.failure {
+            background: pink;
+          }
+        `}</style>
+      </>
+    )
   }
 
   const renderSpinner = () => {
@@ -174,6 +219,7 @@ export default function ReservationDetails() {
   return(
     <>
       <div>
+        { renderMessage() }
         <h1 className="component-header">Your Reservation Details</h1>
         <div className="white-box">
           { spinner ? renderSpinner() : renderDetails() }
