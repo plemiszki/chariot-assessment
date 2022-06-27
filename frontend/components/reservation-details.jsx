@@ -75,7 +75,7 @@ export default function ReservationDetails() {
     }
     return(
       <>
-        <p className={ `message ${className}` }>{ text }</p>
+        <p className={ className }>{ text }</p>
         <style jsx>{`
           p {
             padding: 20px;

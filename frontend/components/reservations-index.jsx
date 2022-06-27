@@ -30,6 +30,26 @@ export default function ReservationsIndex() {
       })
   }, [])
 
+  const renderMessage = () => {
+    if (window.location.search === '?message=failure') {
+      return(
+        <>
+          <p>We're sorry, but a truck of that type is not available for your requested reservation period.</p>
+          <style jsx>{`
+            p {
+              padding: 20px;
+              background: pink;
+              border-radius: 5px;
+              font-family: 'TeachableSans-SemiBold';
+              margin-bottom: 30px;
+              box-shadow: 1px 2px 3px 0px #e6e9ec;
+            }
+          `}</style>
+        </>
+      )
+    }
+  }
+
   const renderSpinner = () => {
     return(
       <>
@@ -121,6 +141,7 @@ export default function ReservationsIndex() {
   return(
     <>
       <div>
+        { renderMessage() }
         <h1 className="component-header">Your Reservations</h1>
         <div className="white-box">
           { spinner ? renderSpinner() : (reservations.length === 0 ? renderNoReservations() : renderTable()) }
