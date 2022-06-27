@@ -16,11 +16,15 @@ module.exports = {
         use: [
           { loader: 'babel-loader' }
         ]
+      },
+      {
+        test: /\.css$/,
+        use: [ 'style-loader', 'css-loader' ]
       }
     ]
   },
   devtool: 'source-maps',
   resolve: {
-    extensions: ['.js', '.jsx']
+    extensions: ['.js', '.jsx', '.css']
   }
 };

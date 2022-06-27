@@ -1,3 +1,7 @@
+:root {
+  --calendar-width: 348px;
+}
+
 a.zhaul_left {
   display: inline-block;
   font-size: 50px;
@@ -10,4 +14,16 @@ a.zhaul_left {
 
 div.component-container {
   padding: 50px;
+}
+
+.react-date-picker {
+  left: calc(50% - (var(--calendar-width) / 2)) !important;
+}
+
+.react-date-picker__calendar--closed {
+  display: block !important;
+}
+
+.react-date-picker__wrapper {
+  display: none !important;
 }

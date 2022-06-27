@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react'
+import DatePicker from 'react-date-picker'
 import ChangeCase from 'change-case'
 
 export default function ReservationNew() {
 
   const [spinner, setSpinner] = useState(true)
-  const [startDate, setStartDate] = useState('')
-  const [endDate, setEndDate] = useState('')
+  const [startDate, setStartDate] = useState(new Date)
+  const [endDate, setEndDate] = useState(new Date)
   const [selectedTruckType, setTruckType] = useState()
   const [truckTypes, setTruckTypes] = useState([])
   const [page, setPage] = useState(1)
@@ -16,12 +17,17 @@ export default function ReservationNew() {
     fetch('/api/trucks')
       .then(data => data.json())
       .then((response) => {
-        console.log(response);
         setTruckTypes(response.truckTypes)
         setTruckType(response.truckTypes[0].truckType)
         setSpinner(false)
       })
   }, [])
+
+  useEffect(() => {
+    if (startDate.getTime() > endDate.getTime()) {
+      setEndDate(startDate)
+    }
+  }, [startDate])
 
   const clickNextButton = () => {
     switch (page) {
@@ -135,14 +141,50 @@ export default function ReservationNew() {
       return(
         <>
           <div>
-            <label>Start Date
-              <input value={ startDate } onChange={ (e) => { setStartDate(e.target.value) } } />
-            </label>
-            <label>End Date
-              <input value={ endDate } onChange={ (e) => { setEndDate(e.target.value) } } />
-            </label>
+            <h2>Select Dates</h2>
+            <div className="calendars-container">
+              <div>
+                <h3>Pick Up</h3>
+                <DatePicker
+                  isOpen={ true }
+                  value={ startDate }
+                  minDate={ new Date }
+                  onChange={ (date) => setStartDate(date) }
+                />
+              </div>
+              <div>
+                <h3>Return</h3>
+                <DatePicker
+                  isOpen={ true }
+                  value={ endDate }
+                  minDate={ startDate }
+                  onChange={ (date) => setEndDate(date) }
+                />
+              </div>
+            </div>
           </div>
           <style jsx>{`
+            h2 {
+              text-align: center;
+              font-family: 'TeachableSans-Bold';
+              font-size: 30px;
+              padding: 0;
+              margin-bottom: 20px;
+            }
+            h3 {
+              font-size: 20px;
+              font-family: 'TeachableSans-SemiBold';
+              text-align: center;
+            }
+            .calendars-container {
+              display: grid;
+              grid-template-columns: repeat(2, 1fr);
+              height: 300px;
+              margin-bottom: 20px;
+            }
+            .calendars-container div {
+              text-align: left;
+            }
           `}</style>
         </>
       )
