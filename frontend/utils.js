@@ -13,6 +13,10 @@ export const newModalStyles = {
   }
 }
 
+export const convertDateToString = (date) => {
+  return date.toLocaleString().split(',')[0]
+}
+
 export const renderSpinner = () => {
   return(
     <>

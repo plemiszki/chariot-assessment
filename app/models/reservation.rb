@@ -13,4 +13,14 @@ class Reservation < ApplicationRecord
     errors.add(:end_date, "cannot be before Start date") if end_date.before?(start_date)
   end
 
+  def self.overlapping_ids(start_date:, end_date:)
+    sql = <<-SQL
+      SELECT id
+      FROM reservations
+      WHERE (start_date, end_date)
+      OVERLAPS (DATE '#{start_date}', DATE '#{end_date}' + 1)
+    SQL
+    ActiveRecord::Base.connection.execute(sql).values.flatten
+  end
+
 end

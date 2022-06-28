@@ -50,6 +50,15 @@ export default function ReservationDetails() {
     setMessageTag('success_update')
   }
 
+  const displayUpdateError = () => {
+    setEditModalOpen(false)
+    if (editModalPage === 1) {
+      setMessageTag('failure_truck')
+    } else {
+      setMessageTag('failure_dates')
+    }
+  }
+
   const cancelReservation = () => {
     setSpinner(true)
     setCancelModalOpen(false)
@@ -187,6 +196,7 @@ export default function ReservationDetails() {
             currentStartDate={ new Date(reservation.startDate) }
             currentEndDate={ new Date(reservation.endDate) }
             updateReservationDetails={ updateReservationDetails }
+            displayUpdateError={ displayUpdateError }
             startPage={ editModalPage }
           />
         </Modal>

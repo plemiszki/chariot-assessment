@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import DatePicker from 'react-date-picker'
 import ChangeCase from 'change-case'
+import { convertDateToString } from '../utils.js'
 
 export default function ReservationNew({
   edit,
@@ -9,6 +10,7 @@ export default function ReservationNew({
   currentStartDate,
   currentEndDate,
   updateReservationDetails,
+  displayUpdateError,
   startPage,
 }) {
 
@@ -47,15 +49,20 @@ export default function ReservationNew({
       },
       body: JSON.stringify({
         reservation: {
-          start_date: startDate,
-          end_date: endDate,
+          start_date: convertDateToString(startDate),
+          end_date: convertDateToString(endDate),
           truck_type: selectedTruckType,
         }
       })
     })
-      .then(data => data.json())
-      .then((response) => {
-        updateReservationDetails(response.reservation)
+      .then(async (response) => {
+        const payload = await response.json()
+        if (!response.ok) {
+          return Promise.reject(payload)
+        }
+        updateReservationDetails(payload.reservation)
+      }).catch((errors) => {
+        displayUpdateError()
       })
   }
 
@@ -74,8 +81,8 @@ export default function ReservationNew({
           },
           body: JSON.stringify({
             reservation: {
-              start_date: startDate,
-              end_date: endDate,
+              start_date: convertDateToString(startDate),
+              end_date: convertDateToString(endDate),
               truck_type: selectedTruckType,
             }
           })
