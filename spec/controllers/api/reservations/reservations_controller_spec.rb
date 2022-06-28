@@ -36,10 +36,10 @@ RSpec.describe Api::ReservationsController do
       expect(Reservation.count).to eq(1)
     end
 
-    it 'does not create two reservations on the same day with the same truck' do
+    it 'creates two reservations on the same day with the same truck if one of them is cancelled' do
+      Reservation.create!(start_date: Date.today, end_date: Date.today, truck_id: 1, user_id: 1, is_cancelled: true)
       post :create, params: { reservation: { start_date: Date.today, end_date: Date.today, truck_type: "pickup" } }
-      post :create, params: { reservation: { start_date: Date.today, end_date: Date.today, truck_type: "pickup" } }
-      expect(Reservation.count).to eq(1)
+      expect(Reservation.count).to eq(2)
     end
 
     it 'does not create two reservations with the same truck that overlap' do
