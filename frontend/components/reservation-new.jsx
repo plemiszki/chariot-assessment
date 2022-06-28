@@ -11,6 +11,7 @@ export default function ReservationNew({
   currentEndDate,
   updateReservationDetails,
   displayUpdateError,
+  displayCreateError,
   startPage,
 }) {
 
@@ -87,9 +88,14 @@ export default function ReservationNew({
             }
           })
         })
-          .then(data => data.json())
-          .then((response) => {
-            window.location.href = `/reservations/${response.reservation.id}?message=success_new`
+          .then(async (response) => {
+            const payload = await response.json()
+            if (!response.ok) {
+              return Promise.reject(payload)
+            }
+            window.location.href = `/reservations/${payload.reservation.id}?message=success_new`
+          }).catch((errors) => {
+            displayCreateError()
           })
     }
   }

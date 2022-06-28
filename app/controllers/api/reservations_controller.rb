@@ -14,14 +14,18 @@ class Api::ReservationsController < AdminController
     @reservation = Reservation.new(reservation_params.except("truck_type"))
 
     if @reservation.valid?(:dates_only)
-      available_truck = Truck.find_by_truck_type(reservation_params["truck_type"])
-      if available_truck
-        @reservation.truck = available_truck
+      available_trucks = Truck.get_available(
+        truck_type: reservation_params["truck_type"],
+        start_date: reservation_params["start_date"],
+        end_date: reservation_params["end_date"],
+      )
+      if available_trucks.empty?
+        render json: { message: 'no trucks available' }, status: 422
+      else
+        @reservation.truck = available_trucks.first
         @reservation.user = current_user
         @reservation.save!
         render 'create', formats: [:json], handlers: [:jbuilder]
-      else
-        render json: { message: 'no trucks available' }, status: 422
       end
     else
       render json: @reservation.errors.full_messages, status: 422

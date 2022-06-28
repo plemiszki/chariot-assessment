@@ -21,6 +21,11 @@ export default function ReservationsIndex() {
       })
   }, [])
 
+  const displayCreateError = () => {
+    setMessageTag('failure_truck')
+    setModalOpen(false)
+  }
+
   const renderNoReservations = () => {
     return(
       <p>You currently have no reservations.</p>
@@ -100,7 +105,7 @@ export default function ReservationsIndex() {
         </div>
         <button onClick={ () => { setModalOpen(true) } }>Add Reservation</button>
         <Modal isOpen={ modalOpen } onRequestClose={ () => { setModalOpen(false) } } contentLabel="Modal" style={ newModalStyles } ariaHideApp={ false }>
-          <ReservationNew />
+          <ReservationNew displayCreateError={ displayCreateError } />
         </Modal>
       </div>
       <style jsx>{`
