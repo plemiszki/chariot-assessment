@@ -17,7 +17,8 @@ class Reservation < ApplicationRecord
     sql = <<-SQL
       SELECT id
       FROM reservations
-      WHERE (start_date, end_date)
+      WHERE is_cancelled = false
+      AND (start_date, end_date)
       OVERLAPS (DATE '#{start_date}', DATE '#{end_date}' + 1)
     SQL
     ActiveRecord::Base.connection.execute(sql).values.flatten
